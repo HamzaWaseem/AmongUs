@@ -1,22 +1,25 @@
 import ssl
 import socket
 from datetime import datetime
+
 import certifi
 from urllib.parse import urlparse
 
 def verify_ssl_certificate(url):
+
     try:
         # Parse the URL to get the hostname
         parsed_url = urlparse(url)
         hostname = parsed_url.netloc
         if not hostname:
             hostname = url
-            
+
         # Remove port if present
         hostname = hostname.split(':')[0]
         
         # Create SSL context using certifi for trusted certificates
         context = ssl.create_default_context(cafile=certifi.where())
+
         
         with socket.create_connection((hostname, 443)) as sock:
             with context.wrap_socket(sock, server_hostname=hostname) as ssock:
@@ -42,3 +45,4 @@ def verify_ssl_certificate(url):
         return {'status': 'invalid', 'error': 'Could not resolve hostname'}
     except Exception as e:
         return {'status': 'invalid', 'error': str(e)}
+
