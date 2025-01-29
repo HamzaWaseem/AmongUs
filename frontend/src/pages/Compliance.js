@@ -32,122 +32,107 @@ function Compliance() {
     const [results, setResults] = useState(null);
     const [error, setError] = useState(null);
 
-    const handleCheckCompliance = async(framework) => {
+    const handleCheckCompliance = async (framework) => {
         setError(null);
         setSelectedFramework(framework);
         try {
             const response = await axios.get(`/api/compliance/check-${framework}`);
             setResults(response.data);
         } catch (err) {
-            setError(err.response ? .data ? .error || 'An error occurred');
+            setError(err.response?.data?.error || 'An error occurred');
         }
     };
 
     const getStatusIcon = (status) => {
         switch (status) {
             case 'secure':
-                return <CheckIcon color = "success" / > ;
+                return <CheckIcon color="success" />;
             case 'vulnerable':
-                return <ErrorIcon color = "error" / > ;
+                return <ErrorIcon color="error" />;
             default:
-                return <PendingIcon color = "warning" / > ;
+                return <PendingIcon color="warning" />;
         }
     };
 
-    return ( <
-        Box >
-        <
-        Typography variant = "h4"
-        gutterBottom >
-        Compliance Audit <
-        /Typography>
+    return (
+        <Box>
+            <Typography variant="h4" gutterBottom>
+                Compliance Audit
+            </Typography>
 
-        <
-        Grid container spacing = { 3 } >
-        <
-        Grid item xs = { 12 }
-        md = { 6 } >
-        <
-        Card >
-        <
-        CardContent >
-        <
-        Typography variant = "h6"
-        gutterBottom >
-        Select Compliance Framework <
-        /Typography> <
-        List > {
-            complianceFrameworks.map((framework) => ( <
-                ListItem key = { framework.id }
-                secondaryAction = { <
-                    Button
-                    variant = "contained"
-                    onClick = {
-                        () => handleCheckCompliance(framework.id)
-                    } >
-                    Check Compliance <
-                    /Button>
-                } >
-                <
-                ListItemText primary = { framework.name }
-                secondary = { framework.description }
-                /> < /
-                ListItem >
-            ))
-        } <
-        /List> < /
-        CardContent > <
-        /Card> < /
-        Grid >
+            <Grid container spacing={3}>
+                <Grid item xs={12} md={6}>
+                    <Card>
+                        <CardContent>
+                            <Typography variant="h6" gutterBottom>
+                                Select Compliance Framework
+                            </Typography>
+                            <List>
+                                {complianceFrameworks.map((framework) => (
+                                    <ListItem
+                                        key={framework.id}
+                                        secondaryAction={
+                                            <Button
+                                                variant="contained"
+                                                onClick={() => handleCheckCompliance(framework.id)}
+                                            >
+                                                Check Compliance
+                                            </Button>
+                                        }
+                                    >
+                                        <ListItemText
+                                            primary={framework.name}
+                                            secondary={framework.description}
+                                        />
+                                    </ListItem>
+                                ))}
+                            </List>
+                        </CardContent>
+                    </Card>
+                </Grid>
 
-        <
-        Grid item xs = { 12 }
-        md = { 6 } > {
-            error && ( <
-                Alert severity = "error"
-                sx = {
-                    { mb: 2 }
-                } > { error } <
-                /Alert>
-            )
-        } {
-            results && ( <
-                Card >
-                <
-                CardContent >
-                <
-                Typography variant = "h6"
-                gutterBottom > { selectedFramework ? .toUpperCase() }
-                Compliance Results <
-                /Typography> <
-                List > {
-                    results.checks ? .map((check, index) => ( <
-                        ListItem key = { index } >
-                        <
-                        ListItemIcon > { getStatusIcon(check.status) } < /ListItemIcon> <
-                        ListItemText primary = { check.name }
-                        secondary = { check.details }
-                        /> <
-                        Chip label = { check.status }
-                        color = {
-                            check.status === 'secure' ?
-                            'success' : check.status === 'vulnerable' ?
-                                'error' : 'warning'
-                        }
-                        size = "small" /
-                        >
-                        <
-                        /ListItem>
-                    ))
-                } <
-                /List> < /
-                CardContent > <
-                /Card>
-            )
-        } <
-        /Grid> < /
-        Grid > <
-        /Box>
+                <Grid item xs={12} md={6}>
+                    {error && (
+                        <Alert severity="error" sx={{ mb: 2 }}>
+                            {error}
+                        </Alert>
+                    )}
+                    {results && (
+                        <Card>
+                            <CardContent>
+                                <Typography variant="h6" gutterBottom>
+                                    {selectedFramework?.toUpperCase()} Compliance Results
+                                </Typography>
+                                <List>
+                                    {results.checks?.map((check, index) => (
+                                        <ListItem key={index}>
+                                            <ListItemIcon>
+                                                {getStatusIcon(check.status)}
+                                            </ListItemIcon>
+                                            <ListItemText
+                                                primary={check.name}
+                                                secondary={check.details}
+                                            />
+                                            <Chip
+                                                label={check.status}
+                                                color={
+                                                    check.status === 'secure'
+                                                        ? 'success'
+                                                        : check.status === 'vulnerable'
+                                                        ? 'error'
+                                                        : 'warning'
+                                                }
+                                                size="small"
+                                            />
+                                        </ListItem>
+                                    ))}
+                                </List>
+                            </CardContent>
+                        </Card>
+                    )}
+                </Grid>
+            </Grid>
+        </Box>
     );
 }
 
