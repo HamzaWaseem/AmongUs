@@ -27,14 +27,20 @@ function CloudSecurity() {
         });
     };
 
-    const handleSubmit = async(e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         setError(null);
         try {
             const response = await axios.post('/api/cloud-security/check-aws', awsCredentials);
             setResults(response.data);
         } catch (err) {
-            setError(err.response ? .data ? .error || 'An error occurred');
+            setError(err.response?.data?.error || 'An error occurred');
+        }
+        try {
+            const response = await axios.get('/api/cloud-security/scan');
+            setResults(response.data);
+        } catch (err) {
+            setError(err.response?.data?.error || 'An error occurred');
         }
     };
 
