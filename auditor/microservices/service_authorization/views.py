@@ -11,29 +11,29 @@ from .security_checks import (
 @require_http_methods(["GET"])
 def check_rbac(request):
     """Endpoint to check RBAC configuration."""
-    result = check_rbac_configuration()
+    result = check_rbac_configuration(request)
     return JsonResponse(result)
 
 @require_http_methods(["GET"])
 def check_permissions(request):
     """Endpoint to verify permission management."""
-    result = check_permission_management()
+    result = check_permission_management(request)
     return JsonResponse(result)
 
 @require_http_methods(["GET"])
 def validate_tokens(request):
     """Endpoint to check token validation."""
-    result = check_token_validation()
+    result = check_token_validation(request)
     return JsonResponse(result)
 
 @require_http_methods(["GET"])
 def check_policies(request):
     """Endpoint to verify access policies."""
-    result = check_access_policies()
+    result = check_access_policies(request)
     return JsonResponse(result)
 
 @require_http_methods(["GET"])
 def run_authorization_checks(request):
     """Endpoint to run all authorization checks."""
-    results = run_all_checks()
+    results = run_all_checks(request)
     return JsonResponse(results)
