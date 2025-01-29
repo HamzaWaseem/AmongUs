@@ -47,10 +47,10 @@ function Layout({ children }) {
             <List>
                 {menuItems.map((item) => (
                     <ListItem
-                        button
                         key={item.text}
                         selected={location.pathname === item.path}
                         onClick={() => navigate(item.path)}
+                        sx={{ cursor: 'pointer' }}
                     >
                         <ListItemIcon>{item.icon}</ListItemIcon>
                         <ListItemText primary={item.text} />
