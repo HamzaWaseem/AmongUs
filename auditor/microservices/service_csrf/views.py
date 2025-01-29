@@ -2,6 +2,12 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 import requests
 from urllib.parse import urlparse
+from .security_checks import (
+    check_csrf_implementation,
+    check_token_validation,
+    check_header_configuration,
+    run_all_checks
+)
 
 @require_http_methods(["POST"])
 def check_csrf_protection(request):
@@ -66,3 +72,27 @@ def get_csrf_report(request):
         'report_generated': True,
         'findings': result.content.decode() if hasattr(result, 'content') else result
     })
+
+@require_http_methods(["GET"])
+def check_csrf_protection(request):
+    """Endpoint to check CSRF protection implementation."""
+    result = check_csrf_implementation()
+    return JsonResponse(result)
+
+@require_http_methods(["GET"])
+def check_csrf_token(request):
+    """Endpoint to verify CSRF token validation."""
+    result = check_token_validation()
+    return JsonResponse(result)
+
+@require_http_methods(["GET"])
+def check_csrf_headers(request):
+    """Endpoint to check CSRF header configuration."""
+    result = check_header_configuration()
+    return JsonResponse(result)
+
+@require_http_methods(["GET"])
+def run_csrf_security_checks(request):
+    """Endpoint to run all CSRF security checks."""
+    results = run_all_checks()
+    return JsonResponse(results)
