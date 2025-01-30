@@ -40,7 +40,8 @@ function DataEncryption() {
         e.preventDefault();
         setError(null);
         try {
-            const response = await axios.post('/api/encryption/check-tls', tlsCheck);
+            // Fixed the API endpoint to match Django's URL configuration
+            const response = await axios.post('http://localhost:8000/service_https_certificate/check-tls/', tlsCheck);
             setResults(response.data);
         } catch (err) {
             setError(err.response?.data?.error || 'An error occurred');

@@ -40,7 +40,8 @@ function DependencyManagement() {
         e.preventDefault();
         setError(null);
         try {
-            const response = await axios.post('/api/dependencies/check-package', packageInfo);
+            // Fixed the API endpoint to match Django's URL configuration
+            const response = await axios.post('http://localhost:8000/service_dependency_management/check-package/', packageInfo);
             setResults(response.data);
         } catch (err) {
             setError(err.response?.data?.error || 'An error occurred');
@@ -50,8 +51,9 @@ function DependencyManagement() {
     const handleScanRequirements = async () => {
         setError(null);
         try {
-            const response = await axios.post('/api/dependencies/scan-requirements');
-            setResults(response.data.results);
+            // Fixed the API endpoint to match Django's URL configuration
+            const response = await axios.get('http://localhost:8000/service_dependency_management/scan-requirements/');
+            setResults(response.data);
         } catch (err) {
             setError(err.response?.data?.error || 'An error occurred');
         }
