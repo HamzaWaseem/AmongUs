@@ -64,6 +64,7 @@ INSTALLED_APPS = [
     'microservices.service_compliance',
     'microservices.service_security_training',
     'microservices.service_security_policies',
+    'drf_yasg',
 ]
 
 

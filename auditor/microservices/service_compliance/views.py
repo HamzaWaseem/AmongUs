@@ -1,5 +1,7 @@
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
 from .security_checks import (
     check_gdpr_compliance,
     check_hipaa_compliance,
@@ -9,30 +11,35 @@ from .security_checks import (
     run_all_checks
 )
 
+@swagger_auto_schema(
+    method='get',
+    operation_summary="Check GDPR Compliance",
+    operation_description="Evaluates system compliance with GDPR requirements",
+    responses={200: "GDPR compliance check results"}
+)
 @require_http_methods(["GET"])
 def check_gdpr_compliance(request):
     """Endpoint to check GDPR compliance."""
     result = check_gdpr_compliance()
     return JsonResponse(result)
 
-@require_http_methods(["GET"])
-def check_hipaa_compliance(request):
-    """Endpoint to check HIPAA compliance."""
-    result = check_hipaa_compliance()
-    return JsonResponse(result)
-
-@require_http_methods(["GET"])
-def check_pci_compliance(request):
-    """Endpoint to check PCI DSS compliance."""
-    result = check_pci_compliance()
-    return JsonResponse(result)
-
-@require_http_methods(["GET"])
-def check_sox_compliance(request):
-    """Endpoint to check SOX compliance."""
-    result = check_sox_compliance()
-    return JsonResponse(result)
-
+@swagger_auto_schema(
+    method='post',
+    operation_summary="Check Specific Compliance Framework",
+    operation_description="Validates compliance against a specified framework",
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        required=['framework'],
+        properties={
+            'framework': openapi.Schema(type=openapi.TYPE_STRING, description="Name of the compliance framework")
+        }
+    ),
+    responses={
+        200: "Compliance check results",
+        400: "Invalid framework specified",
+        500: "Internal server error"
+    }
+)
 @require_http_methods(["POST"])
 def check_specific_compliance(request):
     """Endpoint to check compliance for a specific framework."""

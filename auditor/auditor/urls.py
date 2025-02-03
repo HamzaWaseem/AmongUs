@@ -15,39 +15,31 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+from rest_framework import permissions
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
 
-from django.contrib import admin
-from django.urls import include, path
+schema_view = get_schema_view(
+    openapi.Info(
+        title="Security Auditor API",
+        default_version='v1',
+        description="API documentation for Security Auditor microservices",
+        terms_of_service="https://www.google.com/policies/terms/",
+        contact=openapi.Contact(email="contact@securityauditor.local"),
+        license=openapi.License(name="BSD License"),
+    ),
+    public=True,
+    permission_classes=(permissions.AllowAny,),
+)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('orchestrator/', include('orchestrator.urls')),
-    path('service_https_certificate/', include('microservices.service_https_certificate.urls')),
-    path('service_xss/', include('microservices.service_xss.urls')),
-    path('service_sql_injection/', include('microservices.service_sql_injection.urls')),
-    path('service_csrf/', include('microservices.service_csrf.urls')),
-    path('service_authentication/', include('microservices.service_authentication.urls')),
-    path('service_authorization/', include('microservices.service_authorization.urls')),
-    path('service_rate_limiting/', include('microservices.service_rate_limiting.urls')),
-    path('service_input_validation/', include('microservices.service_input_validation.urls')),
-    path('service_error_handling/', include('microservices.service_error_handling.urls')),
-    path('service_logging/', include('microservices.service_logging.urls')),
-    path('service_data_encryption/', include('microservices.service_data_encryption.urls')),
-    path('service_session_management/', include('microservices.service_session_management.urls')),
-    path('service_http_headers/', include('microservices.service_http_headers.urls')),
-    path('service_dependency_management/', include('microservices.service_dependency_management.urls')),
-    path('service_server_configuration/', include('microservices.service_server_configuration.urls')),
-    path('service_cloud_security/', include('microservices.service_cloud_security.urls')),
-    path('service_api_security/', include('microservices.service_api_security.urls')),
-    path('service_backup_security/', include('microservices.service_backup_security.urls')),
-    path('service_network_security/', include('microservices.service_network_security.urls')),
-    path('service_device_security/', include('microservices.service_device_security.urls')),
-    path('service_physical_security/', include('microservices.service_physical_security.urls')),
-    path('service_business_continuity/', include('microservices.service_business_continuity.urls')),
-    path('service_vulnerability_management/', include('microservices.service_vulnerability_management.urls')),
-    path('service_compliance/', include('microservices.service_compliance.urls')),
-    path('service_security_training/', include('microservices.service_security_training.urls')),
-    path('service_security_policies/', include('microservices.service_security_policies.urls')),
+    path('', include('orchestrator.urls')),
+    
+    # Swagger documentation URLs
+    path('swagger<format>/', schema_view.without_ui(cache_timeout=0), name='schema-json'),
+    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 ]
 

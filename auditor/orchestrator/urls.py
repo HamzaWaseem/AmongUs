@@ -1,6 +1,32 @@
-from django.urls import path
+from django.urls import path, include
 from . import views
 
 urlpatterns = [
     path('', views.index, name='index'),
+    path('https-certificate/', include('microservices.service_https_certificate.urls')),
+    path('xss/', include('microservices.service_xss.urls')),
+    path('sql-injection/', include('microservices.service_sql_injection.urls')),
+    path('csrf/', include('microservices.service_csrf.urls')),
+    path('auth/', include('microservices.service_authentication.urls')),
+    path('authorization/', include('microservices.service_authorization.urls')),
+    path('rate-limiting/', include('microservices.service_rate_limiting.urls')),
+    path('input-validation/', include('microservices.service_input_validation.urls')),
+    path('error-handling/', include('microservices.service_error_handling.urls')),
+    path('logging/', include('microservices.service_logging.urls')),
+    path('data-encryption/', include('microservices.service_data_encryption.urls')),
+    path('session-management/', include('microservices.service_session_management.urls')),
+    path('http-headers/', include('microservices.service_http_headers.urls')),
+    path('dependency-management/', include('microservices.service_dependency_management.urls')),
+    path('server-configuration/', include('microservices.service_server_configuration.urls')),
+    path('cloud-security/', include('microservices.service_cloud_security.urls')),
+    path('api-security/', include('microservices.service_api_security.urls')),
+    path('backup-security/', include('microservices.service_backup_security.urls')),
+    path('network-security/', include('microservices.service_network_security.urls')),
+    path('device-security/', include('microservices.service_device_security.urls')),
+    path('physical-security/', include('microservices.service_physical_security.urls')),
+    path('business-continuity/', include('microservices.service_business_continuity.urls')),
+    path('vulnerability-management/', include('microservices.service_vulnerability_management.urls')),
+    path('compliance/', include('microservices.service_compliance.urls')),
+    path('security-training/', include('microservices.service_security_training.urls')),
+    path('security-policies/', include('microservices.service_security_policies.urls')),
 ]
